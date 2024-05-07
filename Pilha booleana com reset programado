@@ -1,0 +1,119 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+// Definição da estrutura do nó da pilha
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Função para criar um novo nó
+struct Node* newNode(int data) {
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->data = data;
+    node->next = NULL;
+    return node;
+}
+
+// Função para empilhar um novo elemento
+void push(struct Node** top, int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = *top;
+    *top = newNode;
+}
+
+// Função para desempilhar um elemento
+int pop(struct Node** top) {
+    if (*top == NULL) {
+        printf("A pilha está vazia.\n");
+        return -1; // Valor sentinela para indicar que a pilha está vazia
+    }
+    struct Node* temp = *top;
+    int data = temp->data;
+    *top = temp->next;
+    free(temp);
+    return data;
+}
+
+// Função para verificar se um valor está presente na pilha
+bool search(struct Node* top, int data) {
+    struct Node* current = top;
+    while (current != NULL) {
+        if (current->data == data)
+            return true;
+        current = current->next;
+    }
+    return false;
+}
+
+// Função para inserir valores na pilha a partir da entrada do usuário
+void insertFromUser(struct Node** top) {
+    int value;
+    char choice;
+
+    do {
+        printf("Digite um valor para inserir na pilha: ");
+        scanf("%d", &value);
+        push(top, value);
+
+        printf("Deseja inserir outro valor? (s/n): ");
+        scanf(" %c", &choice);
+    } while (choice == 's' || choice == 'S');
+}
+
+// Função para desempilhar um valor da pilha a partir da entrada do usuário
+void removeFromUser(struct Node** top) {
+    char choice;
+    int value;
+
+    do {
+        printf("Deseja desempilhar um valor da pilha? (s/n): ");
+        scanf(" %c", &choice);
+
+        if (choice == 's' || choice == 'S') {
+            value = pop(top);
+            if (value != -1)
+                printf("Valor desempilhado: %d\n", value);
+        }
+    } while (choice == 's' || choice == 'S');
+}
+
+// Função para reiniciar o programa
+bool restartProgram() {
+    char choice;
+    printf("\nDeseja reiniciar o programa? (s/n): ");
+    scanf(" %c", &choice);
+    return (choice == 's' || choice == 'S');
+}
+
+int main() {
+    bool restart = false;
+    do {
+        struct Node* top = NULL;
+
+        // Chamando a função para inserção de valores pelo usuário
+        insertFromUser(&top);
+
+        // Chamando a função para desempilhar valores pelo usuário
+        removeFromUser(&top);
+
+        // Verificando se um valor está presente na pilha
+        int searchValue;
+        printf("\nDigite um valor para verificar se está presente na pilha: ");
+        scanf("%d", &searchValue);
+        if (search(top, searchValue))
+            printf("%d está presente na pilha.\n", searchValue);
+        else
+            printf("%d não está presente na pilha.\n", searchValue);
+
+        // Verificando se o usuário deseja reiniciar o programa
+        restart = restartProgram();
+
+    } while (restart);
+
+    printf("Programa encerrado.\n");
+
+    return 0;
+}
