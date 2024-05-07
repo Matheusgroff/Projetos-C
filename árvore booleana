@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+// Definição da estrutura do nó da árvore
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Função para criar um novo nó
+struct Node* newNode(int data) {
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+// Função para inserir um novo nó na árvore
+struct Node* insert(struct Node* node, int data) {
+    if (node == NULL)
+        return newNode(data);
+    
+    if (data < node->data)
+        node->left = insert(node->left, data);
+    else if (data > node->data)
+        node->right = insert(node->right, data);
+
+    return node;
+}
+
+// Função para verificar se um valor está presente na árvore
+bool search(struct Node* node, int data) {
+    if (node == NULL)
+        return false;
+    if (node->data == data)
+        return true;
+    if (data < node->data)
+        return search(node->left, data);
+    else
+        return search(node->right, data);
+}
+
+// Função para inserir valores na árvore a partir da entrada do usuário
+void insertFromUser(struct Node** root) {
+    int value;
+    char choice;
+
+    do {
+        printf("Digite um valor para inserir na árvore: ");
+        scanf("%d", &value);
+        *root = insert(*root, value);
+
+        printf("Deseja inserir outro valor? (s/n): ");
+        scanf(" %c", &choice);
+    } while (choice == 's' || choice == 'S');
+}
+
+int main() {
+    struct Node* root = NULL;
+
+    // Chamando a função para inserção de valores pelo usuário
+    insertFromUser(&root);
+
+    // Verificando se um valor está presente na árvore
+    int searchValue;
+    printf("\nDigite um valor para verificar se está presente na árvore: ");
+    scanf("%d", &searchValue);
+    if (search(root, searchValue))
+        printf("%d está presente na árvore.\n", searchValue);
+    else
+        printf("%d não está presente na árvore.\n", searchValue);
+
+    return 0;
+}
