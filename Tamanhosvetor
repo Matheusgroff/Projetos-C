@@ -1,0 +1,76 @@
+ /* programa principal, nomear como "Main"
+#include <stdio.h>
+#include "funcoes.h"
+
+int main() {
+    int tamanho;
+    printf("Digite o tamanho do vetor: ");
+    scanf("%d", &tamanho);
+
+    double vetor[tamanho];
+    
+    printf("Digite os elementos do vetor:\n");
+    for (int i = 0; i < tamanho; i++) {
+        printf("Elemento %d: ", i + 1);
+        scanf("%lf", &vetor[i]); // Modificado para "%lf" para ler valores decimais
+    }
+    
+    double maior = encontrarMaior(vetor, tamanho);
+    double menor = encontrarMenor(vetor, tamanho);
+    double media = calcularMedia(vetor, tamanho);
+    
+    printf("O maior valor no vetor é: %.2lf\n", maior); // Modificado para "%.2lf"
+    printf("O menor valor no vetor é: %.2lf\n", menor); // Modificado para "%.2lf"
+    printf("A média dos valores no vetor é: %.2lf\n", media); // Modificado para "%.2lf"
+    
+    return 0;
+}
+*/ salvar como "funcoes.h" - cria biblioteca
+#ifndef FUNCOES_H
+#define FUNCOES_H
+
+double encontrarMaior(double vetor[], int tamanho); // Modificado para double
+double encontrarMenor(double vetor[], int tamanho); // Modificado para double
+double calcularMedia(double vetor[], int tamanho); // Modificado para double
+
+#endif /* FUNCOES_H */
+
+/*
+*/ função estabelecida em C
+#include "funcoes.h"
+
+double encontrarMaior(double vetor[], int tamanho) { // Modificado para double
+    double maior = vetor[0];
+    
+    for (int i = 1; i < tamanho; i++) {
+        if (vetor[i] > maior) {
+            maior = vetor[i];
+        }
+    }
+    
+    return maior;
+}
+
+double encontrarMenor(double vetor[], int tamanho) { // Modificado para double
+    double menor = vetor[0];
+    
+    for (int i = 1; i < tamanho; i++) {
+        if (vetor[i] < menor) {
+            menor = vetor[i];
+        }
+    }
+    
+    return menor;
+}
+
+double calcularMedia(double vetor[], int tamanho) { // Modificado para double
+    double soma = 0; // Modificado para double
+    
+    for (int i = 0; i < tamanho; i++) {
+        soma += vetor[i];
+    }
+    
+    return soma / tamanho; // Modificado para retornar double
+}
+*/
+
