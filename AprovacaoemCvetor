@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+// Função para determinar o status do aluno com base na média
+char* determinarStatus(float media) {
+    if (media >= 6.0) {
+        return "Aprovado";
+    } else if (media >= 4.0) {
+        return "Exame";
+    } else {
+        return "Reprovado";
+    }
+}
+
+int main() {
+    int num_alunos;
+    printf("Digite o número de alunos: ");
+    scanf("%d", &num_alunos);
+
+    char nomes[num_alunos][50];
+    float medias[num_alunos];
+    
+    // Pedindo nomes e notas dos alunos
+    for (int i = 0; i < num_alunos; i++) {
+        printf("\nDigite o nome do aluno %d: ", i+1);
+        scanf("%s", nomes[i]);
+        printf("Digite a média do aluno %d: ", i+1);
+        scanf("%f", &medias[i]);
+    }
+    
+    // Mostrando status dos alunos
+    printf("\nStatus dos alunos:\n");
+    for (int i = 0; i < num_alunos; i++) {
+        printf("%s - Média: %.2f - Status: %s\n", nomes[i], medias[i], determinarStatus(medias[i]));
+    }
+    
+    return 0;
+}
