@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definição da estrutura do nó da árvore
+typedef struct Node {
+    int key;
+    struct Node *left;
+    struct Node *right;
+} Node;
+
+// Função para criar um novo nó
+Node* createNode(int key) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("Erro: Falha ao alocar memória\n");
+        exit(1);
+    }
+    newNode->key = key;
+    newNode->left = newNode->right = NULL;
+    return newNode;
+}
+
+// Função para inserir um nó na árvore
+Node* insert(Node* root, int key) {
+    // Se a árvore estiver vazia, insere o novo nó como raiz
+    if (root == NULL)
+        return createNode(key);
+
+    // Caso contrário, percorre a árvore para encontrar a posição correta para inserção
+    if (key < root->key)
+        root->left = insert(root->left, key);
+    else if (key > root->key)
+        root->right = insert(root->right, key);
+
+    return root;
+}
+
+// Função para buscar um nó na árvore
+Node* search(Node* root, int key) {
+    // Se a árvore estiver vazia ou a chave for encontrada na raiz, retorna a raiz
+    if (root == NULL || root->key == key)
+        return root;
+
+    // Se a chave for menor que a chave da raiz, busca na subárvore esquerda
+    if (key < root->key)
+        return search(root->left, key);
+
+    // Caso contrário, busca na subárvore direita
+    return search(root->right, key);
+}
+
+// Função para imprimir os elementos da árvore em ordem
+void inorderTraversal(Node* root) {
+    if (root != NULL) {
+        inorderTraversal(root->left);
+        printf("%d ", root->key);
+        inorderTraversal(root->right);
+    }
+}
+
+// Função principal
+int main() {
+    Node* root = NULL;
+    int numNodes, value;
+    
+    printf("Quantos valores deseja adicionar na árvore? ");
+    scanf("%d", &numNodes);
+    
+    printf("Insira os valores:\n");
+    for (int i = 0; i < numNodes; i++) {
+        scanf("%d", &value);
+        root = insert(root, value);
+    }
+
+    printf("Elementos da árvore em ordem: ");
+    inorderTraversal(root);
+    printf("\n");
+
+    int chaveBusca;
+    printf("Digite a chave que deseja buscar: ");
+    scanf("%d", &chaveBusca);
+    
+    Node* resultadoBusca = search(root, chaveBusca);
+    if (resultadoBusca != NULL)
+        printf("Chave %d encontrada na árvore.\n", chaveBusca);
+    else
+        printf("Chave %d não encontrada na árvore.\n", chaveBusca);
+
+    return 0;
+}
