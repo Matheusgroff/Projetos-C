@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <time.h>
+
+int main() {
+    int *ptr;
+    int n, i;
+    bool restart = true;
+    char choice;
+
+    do {
+        clock_t start_ptr, end_ptr, start_regular, end_regular;
+        double cpu_time_used_ptr, cpu_time_used_regular;
+
+        // Solicitar ao usuário o tamanho do array
+        printf("Digite o tamanho do array: ");
+        scanf("%d", &n);
+
+        // Alocar memória para o array usando malloc
+        start_ptr = clock();
+        ptr = (int *) malloc(n * sizeof(int));
+        end_ptr = clock();
+
+        // Verificar se a alocação de memória foi bem-sucedida
+        if (ptr == NULL) {
+            printf("Erro! Memória não alocada.");
+            exit(0);
+        }
+
+        // Solicitar ao usuário para inserir os elementos do array
+        printf("Digite os elementos do array:\n");
+        start_regular = clock();
+        for (i = 0; i < n; ++i) {
+            scanf("%d", ptr + i);
+        }
+        end_regular = clock();
+
+        // Exibir os elementos do array
+        printf("Elementos do array inseridos pelo usuário:\n");
+        for (i = 0; i < n; ++i) {
+            printf("%d ", *(ptr + i));
+        }
+
+        // Liberar a memória alocada
+        free(ptr);
+
+        // Calcular o tempo utilizado para operações com ponteiros
+        cpu_time_used_ptr = ((double) (end_ptr - start_ptr)) / CLOCKS_PER_SEC;
+
+        // Calcular o tempo utilizado para operações sem ponteiros
+        cpu_time_used_regular = ((double) (end_regular - start_regular)) / CLOCKS_PER_SEC;
+
+        printf("\n\nTempo utilizando ponteiros: %f segundos\n", cpu_time_used_ptr);
+        printf("Tempo sem utilizar ponteiros: %f segundos\n", cpu_time_used_regular);
+
+        // Perguntar ao usuário se deseja reiniciar o programa
+        printf("\nDeseja reiniciar o programa? (s/n): ");
+        scanf(" %c", &choice);
+
+        // Verificar se o usuário deseja reiniciar o programa
+        restart = (choice == 's' || choice == 'S');
+
+    } while (restart);
+
+    printf("Programa encerrado.\n");
+
+    return 0;
+}
