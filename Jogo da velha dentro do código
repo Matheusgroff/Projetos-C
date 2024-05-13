@@ -1,0 +1,111 @@
+#include <stdio.h>
+
+// Função para exibir o tabuleiro
+void exibirTabuleiro(char tabuleiro[3][3]) {
+    printf("\n");
+    for (int i = 0; i < 3; i++) {
+        printf(" %c | %c | %c ", tabuleiro[i][0], tabuleiro[i][1], tabuleiro[i][2]);
+        if (i != 2) {
+            printf("\n---|---|---\n");
+        }
+    }
+    printf("\n\n");
+}
+
+// Função para verificar se há uma vitória
+int verificarVitoria(char tabuleiro[3][3], char jogador) {
+    for (int i = 0; i < 3; i++) {
+        if (tabuleiro[i][0] == jogador && tabuleiro[i][1] == jogador && tabuleiro[i][2] == jogador) {
+            return 1;
+        }
+        if (tabuleiro[0][i] == jogador && tabuleiro[1][i] == jogador && tabuleiro[2][i] == jogador) {
+            return 1;
+        }
+    }
+    if (tabuleiro[0][0] == jogador && tabuleiro[1][1] == jogador && tabuleiro[2][2] == jogador) {
+        return 1;
+    }
+    if (tabuleiro[0][2] == jogador && tabuleiro[1][1] == jogador && tabuleiro[2][0] == jogador) {
+        return 1;
+    }
+    return 0;
+}
+
+// Função para verificar se o jogo terminou em empate
+int verificarEmpate(char tabuleiro[3][3]) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (tabuleiro[i][j] == ' ') {
+                return 0; // Ainda há espaços vazios no tabuleiro
+            }
+        }
+    }
+    return 1; // Tabuleiro cheio, empate
+}
+
+int main() {
+    char tabuleiro[3][3];
+    int linha, coluna, jogador, jogadas;
+    char marca;
+    char continuar;
+
+    printf("Bem-vindo ao Jogo da Velha!\n\n");
+
+    do {
+        // Inicializar o tabuleiro
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                tabuleiro[i][j] = ' ';
+            }
+        }
+
+        jogador = 1;
+        jogadas = 0;
+
+        while (1) {
+            // Exibir tabuleiro
+            exibirTabuleiro(tabuleiro);
+
+            // Definir marca do jogador atual
+            marca = (jogador == 1) ? 'X' : 'O';
+
+            // Solicitar jogada ao jogador
+            printf("Jogador %d (%c), informe a linha e coluna para a sua jogada (1-3 separados por espaço): ", jogador, marca);
+            scanf("%d %d", &linha, &coluna);
+
+            // Validar jogada
+            if (linha < 1 || linha > 3 || coluna < 1 || coluna > 3 || tabuleiro[linha - 1][coluna - 1] != ' ') {
+                printf("Jogada inválida. Tente novamente.\n");
+                continue;
+            }
+
+            // Atualizar tabuleiro com jogada
+            tabuleiro[linha - 1][coluna - 1] = marca;
+
+            // Verificar se houve vitória
+            if (verificarVitoria(tabuleiro, marca)) {
+                exibirTabuleiro(tabuleiro);
+                printf("Parabéns! O Jogador %d (%c) venceu!\n", jogador, marca);
+                break;
+            }
+
+            // Verificar empate
+            if (verificarEmpate(tabuleiro)) {
+                exibirTabuleiro(tabuleiro);
+                printf("O jogo terminou em empate!\n");
+                break;
+            }
+
+            // Alternar jogador
+            jogador = (jogador == 1) ? 2 : 1;
+        }
+
+        // Solicitar se deseja jogar novamente
+        printf("Deseja jogar novamente? (S/N): ");
+        scanf(" %c", &continuar);
+    } while (continuar == 'S' || continuar == 's');
+
+    printf("Obrigado por jogar!\n");
+
+    return 0;
+}
