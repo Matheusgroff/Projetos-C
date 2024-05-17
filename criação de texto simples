@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+    FILE *file;
+    char filename[100];
+    char text[1000];
+
+    // Solicita o nome do arquivo ao usuário
+    printf("Digite o nome do arquivo (com a extensão .txt): ");
+    fgets(filename, sizeof(filename), stdin);
+
+    // Remove o caractere de nova linha (\n) do nome do arquivo, se presente
+    size_t len = strlen(filename);
+    if (len > 0 && filename[len-1] == '\n') {
+        filename[len-1] = '\0';
+    }
+
+    // Solicita o texto ao usuário
+    printf("Digite o texto a ser salvo no arquivo: ");
+    fgets(text, sizeof(text), stdin);
+
+    // Abre o arquivo para escrita
+    file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo!\n");
+        return 1;
+    }
+
+    // Escreve o texto no arquivo
+    fprintf(file, "%s", text);
+
+    // Fecha o arquivo
+    fclose(file);
+
+    printf("Texto salvo no arquivo '%s' com sucesso!\n", filename);
+
+    return 0;
+}
